@@ -31,7 +31,9 @@ export default function CardEvento({ evento, onRemover }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#",
+        fontFamily: "Bookman, URW Bookman L, serif"
+
       }}
     >
       <div>

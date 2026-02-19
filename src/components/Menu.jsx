@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 export default function Menu() {
   return (
     <nav className="menu">
-      <NavLink to="/" className={({ isActive }) => (isActive ? "link active" : "link")}>
+      <NavLink to="/home" className={({ isActive }) => (isActive ? "link active" : "link")}>
         Home
       </NavLink>
 
@@ -14,6 +14,10 @@ export default function Menu() {
 
       <NavLink to="/cadastrar" className={({ isActive }) => (isActive ? "link active" : "link")}>
         Cadastrar
+      </NavLink>
+
+      <NavLink to="/login" className={({ isActive }) => (isActive ? "link active" : "link")}>
+        Sair
       </NavLink>
     </nav>
   );

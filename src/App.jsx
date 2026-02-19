@@ -9,8 +9,10 @@ import Home from "./pages/Home";
 import Evento from "./pages/Eventos";
 import CadastroEvento from "./pages/CadastroEvento";
 import DetalheEvento from "./pages/DetalheEvento";
+import Login from "./pages/Login"; 
 
 export default function App() {
+  const [logado, setLogado] = useState(false); // estado de login
   const [eventos, setEventos] = useState([
     {
       id: 1,
@@ -30,44 +32,45 @@ export default function App() {
     },
   ]);
 
-  // ➕ Adicionar novo evento
   function adicionarEvento(novo) {
     const eventoComId = { id: Date.now(), ...novo };
     setEventos((lista) => [eventoComId, ...lista]);
   }
 
-  // ✏️ Atualizar evento existente
   function atualizarEvento(id, dadosAtualizados) {
     setEventos((lista) =>
       lista.map((e) => e.id === id ? { ...e, ...dadosAtualizados } : e)
     );
   }
-
-  // ❌ Remover evento específico
+   
   function removerEvento(id) {
     setEventos((lista) => lista.filter((e) => e.id !== id));
   }
 
-  // ❌ Remover todos os eventos
   function removerTodos() {
     setEventos([]);
   }
 
   return (
     <div className="app">
-      <Header />
-      <Menu />
+      {/* Header e Menu só aparecem se estiver logado */}
+      {logado && <Header />}
+      {logado && <Menu />}
 
       <main className="conteudo-principal">
         <Routes>
+          {/* Rota de Login */}
+          <Route path="/" element={<Login setLogado={setLogado} />} />
+
           {/* Página inicial */}
           <Route
-            path="/"
+            path="/home"
             element={
-              <Home
-                total={eventos.length}
-                eventos={eventos}
-              />
+              logado ? (
+                <Home total={eventos.length} eventos={eventos} />
+              ) : (
+                <Navigate to="/" replace />
+              )
             }
           />
 
@@ -75,28 +78,38 @@ export default function App() {
           <Route
             path="/evento"
             element={
-              <Evento
-                eventos={eventos}
-                onRemover={removerEvento}
-                onRemoverTodos={removerTodos}
-              />
+              logado ? (
+                <Evento
+                  eventos={eventos}
+                  onRemover={removerEvento}
+                  onRemoverTodos={removerTodos}
+                />
+              ) : (
+                <Navigate to="/" replace />
+              )
             }
           />
 
           {/* Rota de detalhe */}
           <Route
             path="/evento/:id"
-            element={<DetalheEvento eventos={eventos} />}
+            element={
+              logado ? <DetalheEvento eventos={eventos} /> : <Navigate to="/" replace />
+            }
           />
 
           {/* Página de cadastro/edição */}
           <Route
             path="/cadastrar"
             element={
-              <CadastroEvento
-                onAdd={adicionarEvento}
-                onUpdate={atualizarEvento}
-              />
+              logado ? (
+                <CadastroEvento
+                  onAdd={adicionarEvento}
+                  onUpdate={atualizarEvento}
+                />
+              ) : (
+                <Navigate to="/" replace />
+              )
             }
           />
 
@@ -105,7 +118,8 @@ export default function App() {
         </Routes>
       </main>
 
-      <Footer />
+      {/* Footer só aparece se estiver logado */}
+      {logado && <Footer />}
     </div>
   );
-        }
+}
