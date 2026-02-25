@@ -13,10 +13,12 @@ export default function DetalheEvento({ eventos }) {
   return (
     <div>
       <h1>{evento.titulo}</h1>
-      <p><strong>Data:</strong> {evento.data}</p>
-      <p><strong>Local:</strong> {evento.local}</p>
-      <p><strong>Descrição:</strong> {evento.descricao}</p>
-
+      <p><strong>Data: </strong> {evento.data}</p>
+      <p><strong>Local: </strong> {evento.local}</p>
+      <p><strong>Descrição: </strong> {evento.descricao}</p>
+       <p><strong> Status: </strong> {evento.status}</p>
+       <p><strong> Capacidade: </strong> {evento.capacidade} </p>
+       <p><strong> Mapa: </strong> {evento.mapa} </p>
       <br />
       <Link to="/Evento">Voltar</Link>
     </div>

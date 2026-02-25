@@ -21,7 +21,7 @@ body {
   /* Lado da imagem */
   .login-image {
     flex: 1;
-    background-color: #ffffff;/* azul sólido */
+    background-color: #ffffff;
     background-size: cover;
   }
   

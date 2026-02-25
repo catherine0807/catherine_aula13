@@ -24,10 +24,10 @@ export default function App() {
     },
     {
       id: 2,
-      titulo: "Review da Sprint",
+      titulo: "Tarefa",
       data: "2026-02-13",
       local: "Auditório",
-      descricao: "Apresentação dos resultados da sprint.",
+      descricao: "entrega dos projetos",
       status: "Lotado"
     },
   ]);
@@ -64,13 +64,13 @@ export default function App() {
 
           {/* Página inicial */}
           <Route
-            path="/home"
-            element={
-              logado ? (
+           path="/home"
+          element={
+           logado ? (
                 <Home total={eventos.length} eventos={eventos} />
-              ) : (
-                <Navigate to="/" replace />
-              )
+          ) : (
+           <Navigate to="/" replace />
+           )
             }
           />
 

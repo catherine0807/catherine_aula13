@@ -45,9 +45,21 @@ export default function CardEvento({ evento, onRemover }) {
 
         {/* Data e local */}
         <p className="muted">
-          {evento.data} • {evento.local}
-        </p>
-
+            {evento.data} • {evento.local} 
+          </p>
+          {evento.mapa && (
+  <p>
+    <a
+      href={evento.mapa}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "#0275d8", textDecoration: "underline", fontWeight: "bold" }}
+    >
+      Ver localização no mapa
+    </a>
+  </p>
+)}
+      
         {/* Link para página de detalhe */}
         <Link
           to={`/evento/${evento.id}`}

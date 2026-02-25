@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Header() {
   return (
-    <header className="header">
+    <header className="header"> {/* cabeçalho*/}
       <h1>Gerenciador de Eventos</h1>
       <p className="sub">React JSX + Rotas + Props + State</p>
     </header>

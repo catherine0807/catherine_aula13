@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Menu() {
   return (
-    <nav className="menu">
+    <nav className="menu"> {/*Rotas */}
       <NavLink to="/home" className={({ isActive }) => (isActive ? "link active" : "link")}>
         Home
       </NavLink>

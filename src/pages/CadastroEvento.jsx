@@ -4,14 +4,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function CadastroEvento({ onAdd, onUpdate }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const evento = location.state?.evento; // dados vindos do botão Editar
+  const evento = location.state?.evento;
 
   const [titulo, setTitulo] = useState(evento?.titulo || "");
   const [data, setData] = useState(evento?.data || "");
   const [local, setLocal] = useState(evento?.local || "");
   const [descricao, setDescricao] = useState(evento?.descricao || "");
   const [status, setStatus] = useState(evento?.status || "");
-
+  const [capacidade, setCapacidade] = useState(evento?.capacidade || "");
 
   const limparFormulario = (e) => {
     e.preventDefault();
@@ -20,25 +20,40 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
     setLocal("");
     setDescricao("");
     setStatus("");
+    setCapacidade("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!titulo || !data || !local || !descricao || !status ) {
+    if (!titulo || !data || !local || !descricao || !status || !capacidade) {
       alert("Preencha todos os campos.");
       return;
     }
 
+    // Gera automaticamente o link do mapa a partir do endereço
+    const linkMapa = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(local)}`;
+
+    const novoEvento = {
+      titulo,
+      data,
+      local,
+      descricao,
+      status,
+      capacidade: Number(capacidade),
+      mapa: linkMapa, // <- link do Google Maps automático
+      vagasRestantes: Number(capacidade),
+    };
+
     if (evento) {
-      // edição
-      onUpdate(evento.id, { titulo, data, local, descricao, status });
+      // Atualiza evento existente
+      onUpdate(evento.id, { ...novoEvento });
     } else {
-      // novo cadastro
-      onAdd({ titulo, data, local, descricao, status });
+      // Adiciona novo evento
+      onAdd(novoEvento);
     }
 
-    navigate("/evento");
+    navigate("/evento"); // volta para a lista de eventos
   };
 
   return (
@@ -69,7 +84,7 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
           <input
             value={local}
             onChange={(e) => setLocal(e.target.value)}
-            placeholder="Ex: Laboratório"
+            placeholder="Ex: Av. Fernando Machado"
           />
         </label>
 
@@ -78,24 +93,40 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
           <input
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
-            placeholder="Ex: Descrição Evento"
+            placeholder="Ex: Descrição do Evento"
           />
         </label>
+
         <label>
           Status
           <input
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            placeholder="Ex: Status Evento"
+            placeholder="Ex: Aberto"
+          />
+        </label>
+
+        <label>
+          Capacidade
+          <input
+            value={capacidade}
+            onChange={(e) => setCapacidade(e.target.value)}
+            placeholder="Ex: 50 pessoas"
           />
         </label>
 
         <div className="row">
-          <button className="btn" type="submit">Salvar</button>
+          <button className="btn" type="submit">
+            Salvar
+          </button>
           <button className="btn" type="button" onClick={limparFormulario}>
             Limpar
           </button>
-          <button className="btn ghost" type="button" onClick={() => navigate("/evento")}>
+          <button
+            className="btn ghost"
+            type="button"
+            onClick={() => navigate("/evento")}
+          >
             Cancelar
           </button>
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function Footer() {
-  return <footer className="footer">SENAI • Projeto didático</footer>;
+  return <footer className="footer">SENAI • Projeto didático</footer>; /* Parte inferior da tela  */
 }
