@@ -12,6 +12,10 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
   const [descricao, setDescricao] = useState(evento?.descricao || "");
   const [status, setStatus] = useState(evento?.status || "");
   const [capacidade, setCapacidade] = useState(evento?.capacidade || "");
+  const [vagasRestantes, setVagasRestantes] = useState(evento?.vagasRestantes || "");
+  const [fotosTexto, setFotosTexto] = useState(
+  evento?.fotos?.join("\n") || "");
+  
 
   const limparFormulario = (e) => {
     e.preventDefault();
@@ -21,18 +25,26 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
     setDescricao("");
     setStatus("");
     setCapacidade("");
+    setFotosTexto("");
+    setVagasRestantes("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!titulo || !data || !local || !descricao || !status || !capacidade) {
+    if (!titulo || !data || !local || !descricao || !status || !capacidade || !vagasRestantes) {
       alert("Preencha todos os campos.");
       return;
     }
 
-    // Gera automaticamente o link do mapa a partir do endereço
-    const linkMapa = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(local)}`;
+    const linkMapa = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      local
+    )}`;
+
+    const fotosLista = fotosTexto
+      .split("\n")
+      .map((linha) => linha.trim())
+      .filter((linha) => linha !== "");
 
     const novoEvento = {
       titulo,
@@ -41,19 +53,18 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
       descricao,
       status,
       capacidade: Number(capacidade),
-      mapa: linkMapa, // <- link do Google Maps automático
-      vagasRestantes: Number(capacidade),
+      mapa: linkMapa,
+      vagasRestantes,
+      fotos: fotosLista,
     };
 
     if (evento) {
-      // Atualiza evento existente
       onUpdate(evento.id, { ...novoEvento });
     } else {
-      // Adiciona novo evento
       onAdd(novoEvento);
     }
 
-    navigate("/evento"); // volta para a lista de eventos
+    navigate("/evento");
   };
 
   return (
@@ -109,19 +120,77 @@ export default function CadastroEvento({ onAdd, onUpdate }) {
         <label>
           Capacidade
           <input
+            type="number"
             value={capacidade}
             onChange={(e) => setCapacidade(e.target.value)}
-            placeholder="Ex: 50 pessoas"
+            placeholder="Ex: 50"
           />
         </label>
+
+        <label>
+          Vagas restantes
+          <input
+            type="number"
+            value={vagasRestantes}
+            onChange={(e) => setVagasRestantes(e.target.value)}
+            placeholder="Ex: 30"
+          />
+        </label>
+
+        <label>
+          Fotos (uma URL por linha)
+          <textarea
+            value={fotosTexto}
+            onChange={(e) => setFotosTexto(e.target.value)}
+            placeholder="Cole aqui as URLs das fotos, uma por linha"
+          />
+        </label>
+
+        {/* Pré-visualização das fotos */}
+        {fotosTexto && (
+          <div>
+            <h4>Pré-visualização:</h4>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                flexWrap: "wrap",
+                marginTop: "10px",
+              }}
+            >
+              {fotosTexto.split("\n").map(
+                (foto, idx) =>
+                  foto.trim() !== "" && (
+                    <a
+                      key={idx}
+                      href={foto}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={foto}
+                        alt={`Foto ${idx + 1}`}
+                        style={{
+                          maxWidth: "120px",
+                          borderRadius: "5px",
+                        }}
+                      />
+                    </a>
+                  )
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="row">
           <button className="btn" type="submit">
             Salvar
           </button>
+
           <button className="btn" type="button" onClick={limparFormulario}>
             Limpar
           </button>
+
           <button
             className="btn ghost"
             type="button"

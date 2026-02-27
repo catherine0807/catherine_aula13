@@ -18,7 +18,10 @@ export default function DetalheEvento({ eventos }) {
       <p><strong>Descrição: </strong> {evento.descricao}</p>
        <p><strong> Status: </strong> {evento.status}</p>
        <p><strong> Capacidade: </strong> {evento.capacidade} </p>
+        <p><strong> Vagas Restantes: </strong></p>
        <p><strong> Mapa: </strong> {evento.mapa} </p>
+       <p><strong> Foto Evento: </strong>{evento.fotosTexto} </p>
+      
       <br />
       <Link to="/Evento">Voltar</Link>
     </div>

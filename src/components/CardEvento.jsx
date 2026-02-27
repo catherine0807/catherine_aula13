@@ -4,12 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 export default function CardEvento({ evento, onRemover }) {
   const navigate = useNavigate();
 
-  // Navega para /cadastrar para editar o evento
   const handleEditar = () => {
     navigate("/cadastrar", { state: { evento } });
   };
 
-  // Estilo da badge de status
   const badgeStyle = {
     padding: "0.2rem 0.6rem",
     borderRadius: "12px",
@@ -31,36 +29,64 @@ export default function CardEvento({ evento, onRemover }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#",
-        fontFamily: "Bookman, URW Bookman L, serif"
-
+        backgroundColor: "#ADD8E6",
+        color: "#fff",
       }}
     >
       <div>
-        {/* Título e status */}
         <h3>
           {evento.titulo}
-          {evento.status && <span style={badgeStyle}>{evento.status}</span>}
+          {evento.status && (
+            <span style={badgeStyle}>{evento.status}</span>
+          )}
         </h3>
 
-        {/* Data e local */}
         <p className="muted">
-            {evento.data} • {evento.local} 
+          {evento.data} • {evento.local} • {evento.capacidade} vagas
+        </p>
+
+        {/* Link do mapa */}
+        {evento.mapa && (
+          <p>
+            <a
+              href={evento.mapa}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#fff",
+                textDecoration: "underline",
+                fontWeight: "bold",
+              }}
+            >
+              Ver localização no mapa
+            </a>
           </p>
-          {evento.mapa && (
-  <p>
-    <a
-      href={evento.mapa}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: "#0275d8", textDecoration: "underline", fontWeight: "bold" }}
-    >
-      Ver localização no mapa
-    </a>
-  </p>
-)}
-      
-        {/* Link para página de detalhe */}
+        )}
+
+        {/* Fotos */}
+        {evento.fotos && evento.fotos.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "10px",
+              flexWrap: "wrap",
+            }}
+          >
+            {evento.fotos.map((foto, idx) => (
+              <img
+                key={idx}
+                src={foto}
+                alt={`Foto ${idx + 1}`}
+                style={{
+                  maxWidth: "120px",
+                  borderRadius: "5px",
+                }}
+              />
+            ))}
+          </div>
+        )}
+
         <Link
           to={`/evento/${evento.id}`}
           className="btn info"
@@ -69,7 +95,7 @@ export default function CardEvento({ evento, onRemover }) {
             display: "inline-block",
             textDecoration: "none",
             padding: "0.4rem 0.8rem",
-            backgroundColor: "#0275d8",
+            backgroundColor: "#094092",
             color: "#fff",
             borderRadius: "4px",
             fontSize: "0.9rem",
@@ -79,15 +105,13 @@ export default function CardEvento({ evento, onRemover }) {
         </Link>
       </div>
 
-      {/* Botões Editar e Remover */}
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <button
           type="button"
-          className="btn warning"
           onClick={handleEditar}
           style={{
             padding: "0.4rem 0.8rem",
-            backgroundColor: "#f0ad4e",
+            backgroundColor: "#094092",
             color: "#fff",
             border: "none",
             borderRadius: "4px",
@@ -100,7 +124,6 @@ export default function CardEvento({ evento, onRemover }) {
 
         <button
           type="button"
-          className="btn danger"
           onClick={() => onRemover(evento.id)}
           style={{
             padding: "0.4rem 0.8rem",

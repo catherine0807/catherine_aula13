@@ -27,12 +27,12 @@ body {
     .menu { 
     display: flex; 
     gap: 10px; 
-    padding: 12px 16px; 
+    padding: 15px 16px; 
     border-bottom: 1px solid #00000000; 
     }
     
     .link { 
-    padding: 8px 10px; 
+    padding: 10px 20px; 
     border-radius: 10px; 
     text-decoration: none; 
     color: #ffffff; 
